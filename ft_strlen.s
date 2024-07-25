@@ -7,14 +7,22 @@ section .text
 	global _start
 _start:
 	mov rcx, 0
+	;mov rsi string
+	mov rsi, rcx
+	mov rax,1
+	mov rdi,1
+	mov rdx,1
+
+print_number:
+	
 
 l1:
-	mov rax, 1
-	mov rdi, 1
-	mov rsi, rcx
-	mov rdx, 1
+	add rcx,1
+	call int_to_string
 	syscall
 
 	mov rax, 60
 	mov rdi, 0
-	syscallf
+	syscall
+
+	loop l1
