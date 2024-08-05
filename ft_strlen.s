@@ -1,48 +1,92 @@
 BITS 64
 
 section .data
-	string db 'Salut les copains',0
-	args_err_mess db 'Wrong numbers of arguments',0
-	args_err_mess_l db 26
+	string db '>Test<',0x0A,0
+	string_l equ $ - string
+	args_err_mess db 'Wrong numbers of arguments',0x0A,0
+	args_err_mess_l equ $ - args_err_mess
 
 section .bss
-	str_arg: resb 1024
-	s_len: resd 1
+	str_res resb 1024
+	tmp	resq 1
+	res resq 1
+	len_num resq 1
 
 section .text
 	global _start
 
-
 _start:
-
-	; check_args
-	cmp rdi, 0x1
-	jne print_args_err_mess
-	mov [str_arg],rcx
-	jmp ft_strlen
-	xor rcx,rcx
-
-print_args_err_mess:
-	mov rax,1
-	mov rdi,1
-	mov rsi,[args_err_mess]
-	mov rdx,[args_err_mess_l]
+	mov rax, 1
+	mov rdi, 1
+	lea rsi, [string]
+	lea rdx, [string_l]
 	syscall
+
+	; Check number of  arguments
+	mov rdi, [rsp]
+	cmp rdi, 2
+	jne exit_err
+
+	; Copy arguments
+	mov rsi, [rsp + 8] 
+
+	xor rcx, rcx
+	call ft_strlen
+	call exit_prog
 
 ft_strlen:
-	cmp byte [rsi + rcx], 0
-	je print_result
+	cmp	byte [rsi + rcx], 0
+	je	print_result
 	inc rcx
-	jmp ft_strlen
+	jmp	ft_strlen
 
 print_result:
-	mov rcx,s_len
-	mov rax,1
-	mov rdi,1
-	mov rsi,[s_len]
-	mov rdx,1
+	mov rax, 1
+	mov rdi, 1
+	lea rsi, [string]
+	lea rdx, [string_l]
 	syscall
+	; move into variable res, the value of rcx
+	mov [res],rcx
 
-	mov rax,60
-	xor rdi,rdi
+	mov rax, 1
+	mov rdi, 1
+	lea rsi, [res]
+	lea rdx, [1]
+	syscall
+	
+	jmp exit_prog
+
+ft_itoa:
+	call	l_num	; Stores the number of digit in RBX
+	
+
+l_num:
+	mov rax, [res]
+	xor rcx, rcx
+	call l_num_loop
+
+l_num_loop:
+	inc rcx
+	cmp len_num, 10
+	jl l_num_end_loop	; Jump if strictly lesser than
+	div 10
+	jmp l_num_loop
+
+l_num_end_loop:
+	mov rbx, rcx
+	xor rcx, rcx
+	ret
+
+exit_err:
+	mov rax, 1
+	mov rdi, 1
+	lea rsi, [args_err_mess]
+	lea rdx, [args_err_mess_l]
+	syscall
+	call exit_prog
+
+exit_prog:
+	mov rax, 60
+	xor rdi, rdi
 	syscall
