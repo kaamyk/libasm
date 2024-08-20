@@ -7,8 +7,11 @@ section .data
 	args_err_mess_l equ $ - args_err_mess
 	alloc_err_mess db 'Allocation failed',0x0A,0
 	alloc_err_mess_l equ $ - alloc_err_mess
+	len_error_mess db 'len_num equal zero',0x0A,0
+	len_error_mess_l equ $ - len_error_mess
 
 section .bss
+	str_arg resb 1024
 	res_itoa resb 1024
 	tmp	resq 1
 	res_strlen resq 1
@@ -19,48 +22,61 @@ section .text
 	global _start
 
 _start:
-	mov rax, 1
-	mov rdi, 1
-	lea rsi, [string]
-	lea rdx, [string_l]
-	syscall
-
 	; Check number of  arguments
 	mov rdi, [rsp]
 	cmp rdi, 2
 	jne exit_err
 
 	; Copy arguments
-	mov rsi, [rsp + 8]
+	mov rsi, [rsp + 16]
+
+	xor rcx, rcx          ; Clear RCX (used as counter)
+
+	call ft_strlen
+
+    mov rax, 1            ; syscall: sys_write
+    mov rdi, 1            ; file descriptor: stdout
+    mov rdx, rcx          ; number of bytes to write
+    syscall               ; make the syscall
+    ; jmp exit_prog
 
 	xor rcx, rcx
 	call ft_strlen
+	mov [res_strlen],rcx	; move into variable res_strlen, the value of rcx
+	
+	call print_result
 	call exit_prog
 
 ft_strlen:
-	cmp	byte [rsi + rcx], 0
-	je	print_result
-	inc rcx
-	jmp	ft_strlen
+		cmp	byte [rsi + rcx], 0
+		je	ft_strlen_end
+		inc rcx
+		jmp	ft_strlen
+ft_strlen_end:
+	mov [res_strlen], rcx
+	ret
 
 print_result:
+	call ft_itoa
+
 	mov rax, 1
 	mov rdi, 1
-	lea rsi, [string]
-	lea rdx, [string_l]
+	mov rsi, [dest_memory]
+	mov rdx, 1
+	; mov rdx, [len_num]
 	syscall
-	mov [res_strlen],rcx	; move into variable res_strlen, the value of rcx
-
-	call ft_itoa
-		
-	jmp exit_prog
+	ret
 
 ft_itoa:
 	call	l_num	; Stores (number of digit + NULL byte) in len_num
 	;	void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);
+
+	cmp byte [len_num], 0
+	je	len_error
+
 	mov rax, 9
 	xor rdi, rdi ;	set start addr to 0 to let kernel choose
-	mov rsi, rbx
+	mov rsi, [len_num]
 	mov rdx, 3
 	mov r10, 0x22
 	xor r8, r8
@@ -70,62 +86,65 @@ ft_itoa:
 	cmp rax, -1	; check if allocation failed
 	je alloc_err
 
-	mov [dest_memory],rax	; mov addr in a variable
+	; mov [dest_memory], rax
+	; lea rsi, [dest_memory]	; Put the address of string's origin in rsi
+	; add rsi, [len_num - 1]		; Put the address of string's end in rsi
+	; mov rbx, [dest_memory]	; Store the address of string's origin in rbx
+	; mov rcx, len_num
+	; mov r8, 10
+	; mov rax, res_strlen
 	call write_num_in_string
-
-	mov rax, 1
-	mov rdi, 1
-	lea rsi, [dest_memory]
-	lea rdx, [len_num]
-	syscall
 	ret
 
 write_num_in_string:
-	mov rcx,len_num
+	mov [dest_memory], rax
+	lea rsi, [dest_memory]	; Put the address of string's origin in rsi
+	add rsi, [len_num - 1]		; Put the address of string's end in rsi
+	mov rbx, [dest_memory]	; Store the address of string's origin in rbx
+	mov rcx, len_num
 	mov r8, 10
-	call write_num_loop
-	ret
+	mov rax, res_strlen
+	write_num_loop:
+		cmp rcx, 0
+		je write_num_loop_end	; Si rcx = len_num => quitte la loop
+		sub rsi, 1
 
-write_num_loop:
-	cmp rcx, 0
-	je write_num_loop_end	; Si rcx = len_num => quitte la loop
+		cmp rax, 0
+		je write_num_loop_end	; If quotient < 10 leave loop
 
-	div r8	; divide by 10, quotient in RAX and remainder in RDX
-	mov rbx, rdx
-	add rbx, 0x30
-	cmp rbx, 10
-	jl write_num_loop_end	; Si quotient < 10 quitte loop
+		div r8	; divide by 10, quotient in RAX and remainder in RDX
+		add rdx, '0'	; add '0'(ascii value) to the digit
+		mov [rsi], rdx
 
-	mov rsi,[dest_memory]	; Reset rsi at beginning of allocated memory 
-	add rsi, rcx	; add to rsi index
-
-	mov rsi,rbx	; Stores the number character in the final string
-	
-	dec rcx
-	jmp write_num_loop
-
-write_num_loop_end:
-	ret
+		sub rcx, 1
+		jmp write_num_loop
+	write_num_loop_end:
+		ret
 
 l_num:
 	mov rax, [res_strlen]
 	xor rcx, rcx
 	mov r8, 10
-	call l_num_loop
+	l_num_loop:
+		inc rcx
+		cmp rax, 10
+		jl l_num_end_loop	; Jump if strictly lesser than
+		xor rdx, rdx
+		div r8	; divide by 10, quotient in RAX and remainder in RDX
+		jmp l_num_loop
+	l_num_end_loop:
+		inc rcx	; inc one time for null byte
+		mov [len_num], rcx
+		ret
 	ret
 
-l_num_loop:
-	inc rcx
-	cmp rax, 10
-	jl l_num_end_loop	; Jump if strictly lesser than
-	div r8	; divide by 10, quotient in RAX and remainder in RDX
-	jmp l_num_loop
-
-l_num_end_loop:
-	inc rcx	; inc one time for null byte
-	mov [len_num], rcx
-	xor rcx, rcx
-	ret
+len_error:
+	mov rax,1
+	mov rdi,2
+	mov rsi,[len_error_mess]
+	mov rdx,[len_error_mess_l]
+	syscall
+	call exit_prog_err
 
 alloc_err:
 	mov rax,1
@@ -133,7 +152,7 @@ alloc_err:
 	mov rsi,[args_err_mess]
 	mov rdx,[args_err_mess_l]
 	syscall
-	call exit_prog
+	call exit_prog_err
 
 exit_err:
 	mov rax, 1
@@ -141,7 +160,12 @@ exit_err:
 	lea rsi, [args_err_mess]
 	lea rdx, [args_err_mess_l]
 	syscall
-	call exit_prog
+	call exit_prog_err
+
+exit_prog_err:
+	mov rax, 60
+	mov rdi, 1
+	syscall
 
 exit_prog:
 	mov rax, 60
