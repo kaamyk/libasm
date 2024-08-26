@@ -1,9 +1,10 @@
+BITS 64
+
 global ft_strlen
+
 ft_strlen:
-
-	mov rsi, rdi
 	xor rcx, rcx
-
+	
 	ft_strlen_loop:
 		cmp	byte [rdi + rcx], 0
 		je	ft_strlen_end

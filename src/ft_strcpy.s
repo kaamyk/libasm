@@ -1,15 +1,15 @@
+BITS 64
+
 global ft_strcpy
 
-;	char *strcpy(char *restrict dst, const char *restrict src);
-;	Returns dst
 ft_strcpy:
 	xor rcx, rcx
 	strcpy_loop:
 		cmp byte [rsi + rcx], 0
 		je	strcpy_loop_end
-		mov cl, [rsi + rcx]
-		mov [rdi + rcx], cl
-		inc rcx
+		mov r8, [rsi + rcx]
+		mov [rdi + rcx], r8
+		add rcx, 1
 		jmp strcpy_loop
 
 	strcpy_loop_end:

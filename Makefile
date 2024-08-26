@@ -1,26 +1,26 @@
-# nasm  -f elf64 ft_strlen.s -o ft_strlen.o && ar rcs libasm.a *.o &&
-# cc -g -o test test.c libasm.a && valgrind --leak-check=full -q ./test 
 
 NAME	= 	libasm.a
 
-SRCS	=	$(SRCDIR)/ft_strlen.s	$(SRCDIR)/ft_strcpy.s
 SRCDIR	=	src
+SRCS	=	$(SRCDIR)/ft_strlen.s	$(SRCDIR)/ft_strcpy.s
 
-OBJS	=	$(SRCS:.s=.o)
 OBJDIR	=	.obj
+OBJS	=	$(patsubst $(SRCDIR)/%.s, $(OBJDIR)/%.o, $(SRCS))
+
+COMPIL	=	nasm
 
 FLAGS	=	-f elf64 -g
 
-$(OBJDIR)/%.o:	$(SRCDIR)/%.s
-	nasm $(FLAGS) -c $< -o $@
-
 all:	$(OBJDIR) $(OBJS) $(NAME)
-
-$(NAME):	$(OBJDIR) $(OBJS)
-	ar rcs $(NAME) $(OBJS)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
+
+$(OBJDIR)/%.o:	$(SRCDIR)/%.s
+	$(COMPIL) $(FLAGS) $< -o $@
+
+$(NAME):	$(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 clean:
 	rm -rf $(OBJDIR)
