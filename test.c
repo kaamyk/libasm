@@ -1,29 +1,17 @@
-#include <string.h>
-#include <stdio.h>
-
 #include "inc/test.h"
 
-#define GRN "\e[0;32m"
-#define RED "\e[0;31m"
-#define COLOR_RESET "\e[0m"
-
-
-int	main( void )
+void	test_strlen(char *s, char *t, char *l)
 {
-	char	s[] = "bibi";
-	char	t[5] = {0};
-	// char	*r = NULL;
-	char	l[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-
-	char	buf1[255] = {0};
-	char	buf2[255] = {0};
-
+	size_t	s1 = 0;
+	size_t	s2 = 0;
 	printf("==================\n");
 	printf("ft_strlen:\n");
 
 	
 	printf("strlen(s) / ft_strlen(s)\n");
-	if (strlen(s) == ft_strlen(s))
+	s1 = strlen(s);
+	s2 = ft_strlen(s);
+	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -33,7 +21,9 @@ int	main( void )
 	}
 
 	printf("strlen(t) / ft_strlen(t)\n");
-	if (strlen(t) == ft_strlen(t))
+	s1 = strlen(t);
+	s2 = ft_strlen(t);
+	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -44,7 +34,9 @@ int	main( void )
 
 	
 	// printf("strlen(r) / ft_strlen(r)\n");
-	// if (strlen(r) == ft_strlen(r))
+	// s1 = strlen(r);
+	// s2 = ft_strlen(r);
+	// if (s1 == s2)
 	// 	printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	// else
 	// {
@@ -54,7 +46,9 @@ int	main( void )
 	// }
 
 	printf("strlen(l) / ft_strlen(l)\n");
-	if (strlen(l) == ft_strlen(l))
+	s1 = strlen(l);
+	s2 = ft_strlen(l);
+	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -62,6 +56,13 @@ int	main( void )
 		printf("len r: %ld\n", ft_strlen(l));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
+}
+
+void	test_strcpy(char *s, char *t, char *l)
+{
+
+	char	buf1[255] = {0};
+	char	buf2[255] = {0};
 
 	printf("==================\n");
 	printf("ft_strcpy:\n");
@@ -109,6 +110,95 @@ int	main( void )
 		printf("ft_strcpy: buf2(dest) == [%s]\n", buf2);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
+
+}
+
+void	test_strcmp(char *s, char *t, char *l, char *l2)
+{
+	int		i1 = 0;
+	int		i2 = 0;
+
+	printf("==================\n");
+	printf("ft_strcmp:\n");
+	printf("strcmp(l, l2) / ft_strcmp(l, l2)\n");
+	i1 = strcmp(l, l2);
+	i2 = ft_strcmp(l, l2);
+	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("strcmp: %d\n", strcmp(l, l2));
+		printf("ft_strcmp: %d\n", ft_strcmp(l, l2));
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}	
+
+	printf("strcmp(l, s) / ft_strcmp(l, s)\n");
+	i1 = strcmp(l, s);
+	i2 = ft_strcmp(l, s);
+	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("strcmp: %d\n", i1);
+		printf("ft_strcmp: %d\n", i2);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("strcmp(t, s) / ft_strcmp(t, s)\n");
+	i1 = strcmp(t, s);
+	i2 = ft_strcmp(t, s);
+	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("strcmp: %d\n", i1);
+		printf("ft_strcmp: %d\n", i2);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+}
+
+void test_write(char *s, char *t)
+{
+	(void)t;
+	int	fd_ft = open("ft_write_out.txt", O_CREAT, S_IRWXU);
+	if (fd_ft == -1)
+	{
+		printf("fd_ft failed\n");
+		return ;
+	}
+	int	fd_sys = open("write_out.txt", O_CREAT, S_IRWXU);
+	if (fd_sys == -1)
+	{
+		printf("ft_sys failed\n");
+		close(fd_ft);
+		return ;
+	}
+	for (int i = 0; *(s + i) != 0; i++)
+	{
+		printf("&s == %p\n", s+i);
+	}
+	ft_write(fd_ft, s, strlen(s));
+	write(fd_sys, s, strlen(s));
+
+	close(fd_ft);
+	close(fd_sys);
+}
+
+int	main( void )
+{
+	char	s[] = "Bibi";
+	char	t[5] = {0};
+	// char	*r = NULL;
+	// char	l[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	// char	l2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+
+	// test_strlen(s, t, l);
+
+	// test_strcpy(s, t, l);
+
+	// test_strcmp(s, t, l, l2);
+
+	test_write(s, t);
 
 	return (0);
 }

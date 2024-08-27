@@ -1,3 +1,5 @@
 *.o
 test
 libasm.a
+write_out.txt
+ft_write_out.txt
