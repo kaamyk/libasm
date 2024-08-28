@@ -1,4 +1,5 @@
 #include "inc/test.h"
+#include <errno.h>
 
 void	test_strlen(char *s, char *t, char *l)
 {
@@ -157,28 +158,88 @@ void	test_strcmp(char *s, char *t, char *l, char *l2)
 	}
 }
 
-void test_write(char *s, char *t)
+void test_write(char *s, char *t, char *l)
 {
-	(void)t;
-	int	fd_ft = open("ft_write_out.txt", O_CREAT, S_IRWXU);
-	if (fd_ft == -1)
-	{
-		printf("fd_ft failed\n");
-		return ;
-	}
-	int	fd_sys = open("write_out.txt", O_CREAT, S_IRWXU);
+	remove("write_out");
+	remove("ft_out");
+	char	ft_res[256] = {0};
+	char	res[256] = {0};
+	int	fd_sys = open("write_out", O_CREAT | O_RDWR, 777);
 	if (fd_sys == -1)
 	{
+		perror(strerror(errno));
 		printf("ft_sys failed\n");
-		close(fd_ft);
 		return ;
 	}
-	for (int i = 0; *(s + i) != 0; i++)
+	int	fd_ft = open("ft_out", O_CREAT | O_RDWR, 777);
+	if (fd_ft == -1)
 	{
-		printf("&s == %p\n", s+i);
+		perror(strerror(errno));
+		printf("fd_ft failed\n");
+		close(fd_sys);
+		return ;
 	}
+	printf("==================\n");
+	printf("write(s) / ft_write(s)\n");
 	ft_write(fd_ft, s, strlen(s));
 	write(fd_sys, s, strlen(s));
+
+	bzero(res, 255);
+	bzero(ft_res, 255);
+	lseek(fd_sys, 0, SEEK_SET);
+	lseek(fd_ft, 0, SEEK_SET);
+	read(fd_sys, res, 255);
+	read(fd_ft, ft_res, 255);
+
+	if (strcmp(ft_res, res) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("fd_sys content: [%s]\n", ft_res);
+		printf("fd_ft content: [%s]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}	
+	
+
+	printf("write(t) / ft_write(t)\n");
+	ft_write(fd_ft, t, strlen(t));
+	write(fd_sys, t, strlen(t));
+
+	bzero(res, 255);
+	bzero(ft_res, 255);
+	lseek(fd_sys, 0, SEEK_SET);
+	lseek(fd_ft, 0, SEEK_SET);
+	read(fd_sys, res, 255);
+	read(fd_ft, ft_res, 255);
+
+	if (strcmp(ft_res, res) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("fd_sys content: [%s]\n", ft_res);
+		printf("fd_ft content: [%s]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("write(l) / ft_write(l)\n");
+	ft_write(fd_ft, l, strlen(l));
+	write(fd_sys, l, strlen(l));
+
+	bzero(res, 255);
+	bzero(ft_res, 255);
+	lseek(fd_sys, 0, SEEK_SET);
+	lseek(fd_ft, 0, SEEK_SET);
+	read(fd_sys, res, 255);
+	read(fd_ft, ft_res, 255);
+
+	if (strcmp(ft_res, res) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("fd_sys content: [%s]\n", ft_res);
+		printf("fd_ft content: [%s]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
 
 	close(fd_ft);
 	close(fd_sys);
@@ -189,16 +250,16 @@ int	main( void )
 	char	s[] = "Bibi";
 	char	t[5] = {0};
 	// char	*r = NULL;
-	// char	l[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-	// char	l2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	l[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	l2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 
-	// test_strlen(s, t, l);
+	test_strlen(s, t, l);
 
-	// test_strcpy(s, t, l);
+	test_strcpy(s, t, l);
 
-	// test_strcmp(s, t, l, l2);
+	test_strcmp(s, t, l, l2);
 
-	test_write(s, t);
+	test_write(s, t, l);
 
 	return (0);
 }
