@@ -19,4 +19,5 @@ ft_write:
 		inc rsi
 		jmp ft_putchar
 	exit:
+		mov rax, r9
 		ret

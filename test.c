@@ -164,6 +164,9 @@ void test_write(char *s, char *t, char *l)
 	remove("ft_out");
 	char	ft_res[256] = {0};
 	char	res[256] = {0};
+
+	ssize_t	bytes = 0;
+	ssize_t	ft_bytes = 0;
 	int	fd_sys = open("write_out", O_CREAT | O_RDWR, 777);
 	if (fd_sys == -1)
 	{
@@ -181,8 +184,8 @@ void test_write(char *s, char *t, char *l)
 	}
 	printf("==================\n");
 	printf("write(s) / ft_write(s)\n");
-	ft_write(fd_ft, s, strlen(s));
-	write(fd_sys, s, strlen(s));
+	ft_bytes = ft_write(fd_ft, s, strlen(s));
+	bytes = write(fd_sys, s, strlen(s));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -191,19 +194,19 @@ void test_write(char *s, char *t, char *l)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s]\n", ft_res);
-		printf("fd_ft content: [%s]\n", res);
+		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
+		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}	
 	
 
 	printf("write(t) / ft_write(t)\n");
-	ft_write(fd_ft, t, strlen(t));
-	write(fd_sys, t, strlen(t));
+	ft_bytes =ft_write(fd_ft, t, strlen(t));
+	bytes =write(fd_sys, t, strlen(t));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -212,18 +215,18 @@ void test_write(char *s, char *t, char *l)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s]\n", ft_res);
-		printf("fd_ft content: [%s]\n", res);
+		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
+		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
 	printf("write(l) / ft_write(l)\n");
-	ft_write(fd_ft, l, strlen(l));
-	write(fd_sys, l, strlen(l));
+	ft_bytes =ft_write(fd_ft, l, strlen(l));
+	bytes =write(fd_sys, l, strlen(l));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -232,12 +235,12 @@ void test_write(char *s, char *t, char *l)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s]\n", ft_res);
-		printf("fd_ft content: [%s]\n", res);
+		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
+		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
