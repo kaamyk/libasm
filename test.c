@@ -248,6 +248,64 @@ void test_write(char *s, char *t, char *l)
 	close(fd_sys);
 }
 
+void	test_read()
+{
+	char	str[256] = {0};
+	char	ft_str[256] = {0};
+
+	ssize_t	bytes = 0;
+	ssize_t	ft_bytes = 0;
+
+	int	fd_sys = open("write_out", O_RDONLY, 777);
+	if (fd_sys == -1)
+	{
+		perror(strerror(errno));
+		printf("ft_sys failed\n");
+		return ;
+	}
+	int	fd_ft = open("ft_out", O_RDONLY, 777);
+	if (fd_ft == -1)
+	{
+		perror(strerror(errno));
+		printf("fd_ft failed\n");
+		close(fd_sys);
+		return ;
+	}
+
+	printf("==================\n");
+	printf("read() / ft_read()\n");
+
+	bzero(str, 255);
+	bzero(ft_str, 255);
+	lseek(fd_sys, 0, SEEK_SET);
+	lseek(fd_ft, 0, SEEK_SET);
+	ft_bytes = ft_read(fd_ft, ft_str, 255);
+	bytes = read(fd_sys, str, 255);
+
+	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s](%ld bytes)\n", ft_str, ft_bytes);
+		printf("str: [%s](%ld bytes)\n", str, bytes);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("read(file_inexistant) / ft_read(file_inexistant)\n");
+
+	ft_bytes = ft_read(55555, ft_str, 255);
+	bytes = read(55555, str, 255);
+
+	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s](%ld bytes)\n", ft_str, ft_bytes);
+		printf("str: [%s](%ld bytes)\n", str, bytes);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+}
+
 int	main( void )
 {
 	char	s[] = "Bibi";
@@ -263,6 +321,8 @@ int	main( void )
 	test_strcmp(s, t, l, l2);
 
 	test_write(s, t, l);
+
+	test_read(s);
 
 	return (0);
 }
