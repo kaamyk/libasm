@@ -1,7 +1,6 @@
 #include "inc/test.h"
-#include <errno.h>
 
-void	test_strlen(char *s, char *t, char *l)
+void	test_strlen(char *str, char *s_empty, char *s_long)
 {
 	size_t	s1 = 0;
 	size_t	s2 = 0;
@@ -9,27 +8,27 @@ void	test_strlen(char *s, char *t, char *l)
 	printf("ft_strlen:\n");
 
 	
-	printf("strlen(s) / ft_strlen(s)\n");
-	s1 = strlen(s);
-	s2 = ft_strlen(s);
+	printf("strlen(str) / ft_strlen(str)\n");
+	s1 = strlen(str);
+	s2 = ft_strlen(str);
 	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len s: %ld\n", strlen(s));
-		printf("len s: %ld\n", ft_strlen(s));
+		printf("len s: %ld\n", strlen(str));
+		printf("len s: %ld\n", ft_strlen(str));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
-	printf("strlen(t) / ft_strlen(t)\n");
-	s1 = strlen(t);
-	s2 = ft_strlen(t);
+	printf("strlen(s_empty) / ft_strlen(s_empty)\n");
+	s1 = strlen(s_empty);
+	s2 = ft_strlen(s_empty);
 	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len t: %ld\n", strlen(t));
-		printf("len t: %ld\n", ft_strlen(t));
+		printf("len s_empty: %ld\n", strlen(s_empty));
+		printf("len s_empty: %ld\n", ft_strlen(s_empty));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -46,20 +45,20 @@ void	test_strlen(char *s, char *t, char *l)
 	// 	printf(RED ">>> KO <<<\n" COLOR_RESET);
 	// }
 
-	printf("strlen(l) / ft_strlen(l)\n");
-	s1 = strlen(l);
-	s2 = ft_strlen(l);
+	printf("strlen(s_long) / ft_strlen(s_long)\n");
+	s1 = strlen(s_long);
+	s2 = ft_strlen(s_long);
 	if (s1 == s2)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len r: %ld\n", strlen(l));
-		printf("len r: %ld\n", ft_strlen(l));
+		printf("len r: %ld\n", strlen(s_long));
+		printf("len r: %ld\n", ft_strlen(s_long));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 }
 
-void	test_strcpy(char *s, char *t, char *l)
+void	test_strcpy(char *str, char *s_empty, char *s_long)
 {
 
 	char	buf1[255] = {0};
@@ -67,11 +66,11 @@ void	test_strcpy(char *s, char *t, char *l)
 
 	printf("==================\n");
 	printf("ft_strcpy:\n");
-	printf("strcpy(s) / ft_strcpy(s)\n");
+	printf("strcpy(str) / ft_strcpy(str)\n");
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
-	strcpy(buf1, s);
-	ft_strcpy(buf2, s);
+	strcpy(buf1, str);
+	ft_strcpy(buf2, str);
 
 	if (strcmp(buf1, buf2) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
@@ -82,11 +81,11 @@ void	test_strcpy(char *s, char *t, char *l)
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
-	printf("strcpy(l) / ft_strcpy(l)\n");
+	printf("strcpy(s_long) / ft_strcpy(s_long)\n");
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
-	strcpy(buf1, l);
-	ft_strcpy(buf2, l);
+	strcpy(buf1, s_long);
+	ft_strcpy(buf2, s_long);
 
 	if (strcmp(buf1, buf2) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
@@ -97,11 +96,11 @@ void	test_strcpy(char *s, char *t, char *l)
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
-	printf("strcpy(t) / ft_strcpy(t)\n");
+	printf("strcpy(s_empty) / ft_strcpy(s_empty)\n");
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
-	strcpy(buf1, t);
-	ft_strcpy(buf2, t);
+	strcpy(buf1, s_empty);
+	ft_strcpy(buf2, s_empty);
 
 	if (strcmp(buf1, buf2) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
@@ -114,28 +113,28 @@ void	test_strcpy(char *s, char *t, char *l)
 
 }
 
-void	test_strcmp(char *s, char *t, char *l, char *l2)
+void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 {
 	int		i1 = 0;
 	int		i2 = 0;
 
 	printf("==================\n");
 	printf("ft_strcmp:\n");
-	printf("strcmp(l, l2) / ft_strcmp(l, l2)\n");
-	i1 = strcmp(l, l2);
-	i2 = ft_strcmp(l, l2);
+	printf("strcmp(s_long, s_long2) / ft_strcmp(s_long, s_long2)\n");
+	i1 = strcmp(s_long, s_long2);
+	i2 = ft_strcmp(s_long, s_long2);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("strcmp: %d\n", strcmp(l, l2));
-		printf("ft_strcmp: %d\n", ft_strcmp(l, l2));
+		printf("strcmp: %d\n", strcmp(s_long, s_long2));
+		printf("ft_strcmp: %d\n", ft_strcmp(s_long, s_long2));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}	
 
-	printf("strcmp(l, s) / ft_strcmp(l, s)\n");
-	i1 = strcmp(l, s);
-	i2 = ft_strcmp(l, s);
+	printf("strcmp(s_long, str) / ft_strcmp(s_long, str)\n");
+	i1 = strcmp(s_long, str);
+	i2 = ft_strcmp(s_long, str);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -145,9 +144,9 @@ void	test_strcmp(char *s, char *t, char *l, char *l2)
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
-	printf("strcmp(t, s) / ft_strcmp(t, s)\n");
-	i1 = strcmp(t, s);
-	i2 = ft_strcmp(t, s);
+	printf("strcmp(s_empty, str) / ft_strcmp(s_empty, str)\n");
+	i1 = strcmp(s_empty, str);
+	i2 = ft_strcmp(s_empty, str);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -158,7 +157,7 @@ void	test_strcmp(char *s, char *t, char *l, char *l2)
 	}
 }
 
-void test_write(char *s, char *t, char *l)
+void test_write(char *str, char *s_empty, char *s_long)
 {
 	remove("write_out");
 	remove("ft_out");
@@ -183,9 +182,9 @@ void test_write(char *s, char *t, char *l)
 		return ;
 	}
 	printf("==================\n");
-	printf("write(s) / ft_write(s)\n");
-	ft_bytes = ft_write(fd_ft, s, strlen(s));
-	bytes = write(fd_sys, s, strlen(s));
+	printf("write(str) / ft_write(str)\n");
+	ft_bytes = ft_write(fd_ft, str, strlen(str));
+	bytes = write(fd_sys, str, strlen(str));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -204,9 +203,9 @@ void test_write(char *s, char *t, char *l)
 	}	
 	
 
-	printf("write(t) / ft_write(t)\n");
-	ft_bytes =ft_write(fd_ft, t, strlen(t));
-	bytes =write(fd_sys, t, strlen(t));
+	printf("write(s_empty) / ft_write(s_empty)\n");
+	ft_bytes =ft_write(fd_ft, s_empty, strlen(s_empty));
+	bytes =write(fd_sys, s_empty, strlen(s_empty));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -224,9 +223,9 @@ void test_write(char *s, char *t, char *l)
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
-	printf("write(l) / ft_write(l)\n");
-	ft_bytes =ft_write(fd_ft, l, strlen(l));
-	bytes =write(fd_sys, l, strlen(l));
+	printf("write(s_long) / ft_write(s_long)\n");
+	ft_bytes =ft_write(fd_ft, s_long, strlen(s_long));
+	bytes =write(fd_sys, s_long, strlen(s_long));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -306,23 +305,111 @@ void	test_read()
 	}
 }
 
+void	test_strdup(char *str, char *s_empty, char *s_long)
+{
+	char	*a = NULL;
+	char	*b = NULL;
+	void	*initial_brk = NULL;
+	
+	printf("==================\n");
+	printf("strdup(str) / ft_strdup(str)\n");
+	a = strdup(str);
+	initial_brk = sbrk(0);
+	b = ft_strdup(str);
+
+	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s]\n", a);
+		printf("str: [%s]\n", b);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	if (a != NULL)
+		free(a);
+	if (brk(initial_brk) == -1)
+	{
+		perror("brk");
+		exit (1);
+	}
+
+	printf("strdup(s_empty) / ft_strdup(s_empty)\n");
+	a = strdup(s_empty);
+	initial_brk = sbrk(0);
+	b = ft_strdup(s_empty);
+
+	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s]\n", a);
+		printf("str: [%s]\n", b);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	if (a != NULL)
+		free(a);
+	// if (b != NULL)
+	// 	free(b);
+	if (brk(initial_brk) == -1)
+	{
+		perror("brk");
+		exit (1);
+	}
+
+	printf("strdup(s_long) / ft_strdup(s_long)\n");
+	a = strdup(s_long);
+	initial_brk = sbrk(0);
+	b = ft_strdup(s_long);
+
+	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s]\n", a);
+		printf("str: [%s]\n", b);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	if (a != NULL)
+		free(a);
+	// if (b != NULL)
+	// 	free(b);
+	if (brk(initial_brk) == -1)
+	{
+		perror("brk");
+		exit (1);
+	}
+}
+
 int	main( void )
 {
-	char	s[] = "Bibi";
-	char	t[5] = {0};
+	// char	str[] = "Bibi";
+	char	*str = malloc(5);
+	if (str == NULL)
+		return(1);
+	str[0] = 'B';
+	str[1] = 'i';
+	str[2] = 'b';
+	str[3] = 'i';
+	str[4] = '\0';
+		
+	char	s_empty[5] = {0};
 	// char	*r = NULL;
-	char	l[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-	char	l2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	s_long[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	s_long2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 
-	test_strlen(s, t, l);
+	test_strlen(str, s_empty, s_long);
 
-	test_strcpy(s, t, l);
+	test_strcpy(str, s_empty, s_long);
 
-	test_strcmp(s, t, l, l2);
+	test_strcmp(str, s_empty, s_long, s_long2);
 
-	test_write(s, t, l);
+	test_write(str, s_empty, s_long);
 
-	test_read(s);
+	test_read(str, s_empty, s_long);
 
+	test_strdup(str, s_empty, s_long);
+
+
+	free(str);
 	return (0);
 }

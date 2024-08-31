@@ -7,8 +7,8 @@ ft_strcpy:
 	strcpy_loop:
 		cmp byte [rsi + rcx], 0
 		je	strcpy_loop_end
-		mov r8, [rsi + rcx]
-		mov [rdi + rcx], r8
+		mov al, byte [rsi + rcx]
+		mov [rdi + rcx], al
 		add rcx, 1
 		jmp strcpy_loop
 
