@@ -3,10 +3,14 @@ NAME	= 	libasm.a
 
 SRCDIR	=	src
 SRCS	=	$(SRCDIR)/ft_strlen.s	$(SRCDIR)/ft_strcpy.s	$(SRCDIR)/ft_strcmp.s	\
-			$(SRCDIR)/ft_write.s	$(SRCDIR)/ft_read.s		$(SRCDIR)/ft_strdup.s
+			$(SRCDIR)/ft_write.s	$(SRCDIR)/ft_read.s		$(SRCDIR)/ft_strdup.s	\
+			$(SRCDIR)/ft_atoi_base_bonus.s
 
 OBJDIR	=	.obj
 OBJS	=	$(patsubst $(SRCDIR)/%.s, $(OBJDIR)/%.o, $(SRCS))
+
+B_OBJS	=	$(patsubst $(SRCDIR)/%.s, $(OBJDIR)/%.o, $(B_SRCS))
+
 
 COMPIL	=	nasm
 
@@ -22,6 +26,9 @@ $(OBJDIR)/%.o:	$(SRCDIR)/%.s
 
 $(NAME):	$(OBJS)
 	ar rcs $(NAME) $(OBJS)
+
+bonus:		$(OBJDIR) $(OBJS) $(B_OBJS)
+	ar rcs $(NAME) $(B_OBJS) $(OBJS)
 
 clean:
 	rm -rf $(OBJDIR)

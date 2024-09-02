@@ -14,11 +14,19 @@
 #define RED "\e[0;31m"
 #define COLOR_RESET "\e[0m"
 
+typedef struct	s_list
+{
+	void	*data;
+	struct s_list	*next;
+}	t_list;
+
 size_t	ft_strlen(char	*s);
 char	*ft_strcpy(char *dest, char *src);
 int 	ft_strcmp(const char *s1, const char *s2);
 ssize_t	ft_write(int fd, char *buf, size_t count);
 ssize_t	ft_read(int fd, char *buf, size_t count);
 char	*ft_strdup(char *src);
+
+int		ft_atoi_base(char *str, char *base);
 
 #endif
