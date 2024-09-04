@@ -385,8 +385,8 @@ void	test_atoi_base()
 	int	res = 0;
 
 	printf("==================\n");
-	printf("ft_atoi_base()\n");
-	res = ft_atoi_base("ABC", NULL);
+	printf("ft_atoi_base(\"ABC\", NULL)\n");
+	res = ft_atoi_base("ABC", NULL);			//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -394,7 +394,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "");
+	printf("ft_atoi_base(\"ABC\", \"\")\n");
+	res = ft_atoi_base("ABC", "");				//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -402,7 +403,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "a");
+	printf("ft_atoi_base(\"ABC\", \"a\")\n");
+	res = ft_atoi_base("ABC", "a");				//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -410,7 +412,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "A BC");
+	printf("ft_atoi_base(\"ABC\", \"A BC\")\n");
+	res = ft_atoi_base("ABC", "A BC");			//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -418,7 +421,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "A	BV");
+	printf("ft_atoi_base(\"ABC\", \"A	BC\")\n");
+	res = ft_atoi_base("ABC", "A	BC");		//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -426,7 +430,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "ABBC");
+	printf("ft_atoi_base(\"ABC\", \"ABBC\")\n");
+	res = ft_atoi_base("ABC", "ABBC");			//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -434,8 +439,80 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	res = ft_atoi_base("ABC", "ABC");
-	if (res == 1)
+
+	printf("ft_atoi_base(\"ABC\", \"ABC\")\n");
+	res = ft_atoi_base("ABC", "ABC");			//
+	if (res == 5)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"AAA\", \"ABC\")\n");
+	res = ft_atoi_base("AAA", "ABC");			//
+	if (res == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"666\", \"ABC\")\n");
+	res = ft_atoi_base("666", "ABC");			//
+	if (res == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"BAC\", \"ABC\")\n");
+	res = ft_atoi_base("BAC", "ABC");			//
+	if (res == 11)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"CAA\", \"ABC\")\n");
+	res = ft_atoi_base("CAA", "ABC");			//
+	if (res == 18)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	
+	printf("ft_atoi_base(\"pui\", \"ppp\")\n");
+	res = ft_atoi_base("", "ABC");			//
+	if (res == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"pqqw\", \"qwertyuiop\")\n");
+	res = ft_atoi_base("pqqw", "qwertyuiop");			//
+	if (res == 9001)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_atoi_base(\"124556\", \"0123456789\")\n");
+	res = ft_atoi_base("124556", "0123456789");			//
+	if (res == 124556)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -447,34 +524,34 @@ void	test_atoi_base()
 int	main( void )
 {
 	// char	str[] = "Bibi";
-	// char	*str = malloc(5);
-	// if (str == NULL)
-	// 	return(1);
-	// str[0] = 'B';
-	// str[1] = 'i';
-	// str[2] = 'b';
-	// str[3] = 'i';
-	// str[4] = '\0';
+	char	*str = malloc(5);
+	if (str == NULL)
+		return(1);
+	str[0] = 'B';
+	str[1] = 'i';
+	str[2] = 'b';
+	str[3] = 'i';
+	str[4] = '\0';
 		
-	// char	s_empty[5] = {0};
-	// // char	*r = NULL;
-	// char	s_long[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-	// char	s_long2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	s_empty[5] = {0};
+	// char	*r = NULL;
+	char	s_long[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	char	s_long2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 
-	// test_strlen(str, s_empty, s_long);
+	test_strlen(str, s_empty, s_long);
 
-	// test_strcpy(str, s_empty, s_long);
+	test_strcpy(str, s_empty, s_long);
 
-	// test_strcmp(str, s_empty, s_long, s_long2);
+	test_strcmp(str, s_empty, s_long, s_long2);
 
-	// test_write(str, s_empty, s_long);
+	test_write(str, s_empty, s_long);
 
-	// test_read(str, s_empty, s_long);
+	test_read(str, s_empty, s_long);
 
-	// test_strdup(str, s_empty, s_long);
+	test_strdup(str, s_empty, s_long);
 
 	test_atoi_base();
 
-	// free(str);
+	free(str);
 	return (0);
 }
