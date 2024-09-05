@@ -451,15 +451,30 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 
 
 
-	struct rlimit limit;
-	
-	limit.rlim_cur = 0;  // Soft limit (100 MB)
-    limit.rlim_max = 0;  // Hard limit (100 MB)
 
-	if (setrlimit(RLIMIT_AS, &limit) != 0) {
+	struct rlimit old_limit;
+	if (getrlimit(RLIMIT_AS,&old_limit) == -1)
+	{
+		perror("getrlimit()");
+	}
+	
+	struct rlimit new_limit;
+	
+	new_limit.rlim_cur = 30 * 1024 * 1024;  // Soft limit (100 MB)
+    new_limit.rlim_max = 30 * 1024 * 1024;  // Hard limit (100 MB)
+
+	if (setrlimit(RLIMIT_AS, &new_limit) != 0) {
         perror("setrlimit");
         return ;
     }
+
+	// int prlimit(pid_t pid, int resource,
+			//    const struct rlimit *_Nullable new_limit,
+			//    struct rlimit *_Nullable old_limit);
+	// if (prlimit(getpid(), RLIMIT_AS, &new_limit, &old_limit) == -1)
+	// {
+	// 	perror("prlimit():");
+	// }
 
 	printf("(heap limited) strdup(s_long) / ft_strdup(s_long)\n");
 	a = strdup(s_long);
@@ -484,6 +499,10 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 		perror("brk");
 		exit (1);
 	}
+	if (setrlimit(RLIMIT_AS, &old_limit) != 0) {
+        perror("setrlimit");
+        return ;
+    }
 }
 
 void	test_atoi_base()
