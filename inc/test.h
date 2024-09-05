@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <sys/resource.h>
 
 #define GRN "\e[0;32m"
 #define RED "\e[0;31m"

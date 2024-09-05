@@ -126,6 +126,7 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 	printf("strcmp(s_long, s_long2) / ft_strcmp(s_long, s_long2)\n");
 	i1 = strcmp(s_long, s_long2);
 	i2 = ft_strcmp(s_long, s_long2);
+	printf("strcmp() == %d | ft_strcmp() == %d\n", i1, i2);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -138,6 +139,7 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 	printf("strcmp(s_long, str) / ft_strcmp(s_long, str)\n");
 	i1 = strcmp(s_long, str);
 	i2 = ft_strcmp(s_long, str);
+	printf("strcmp() == %d | ft_strcmp() == %d\n", i1, i2);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -150,6 +152,7 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 	printf("strcmp(s_empty, str) / ft_strcmp(s_empty, str)\n");
 	i1 = strcmp(s_empty, str);
 	i2 = ft_strcmp(s_empty, str);
+	printf("strcmp() == %d | ft_strcmp() == %d\n", i1, i2);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -371,6 +374,9 @@ void	test_read()
 
 void	test_strdup(char *str, char *s_empty, char *s_long)
 {
+	(void) str;
+	(void) s_empty;
+	(void) s_long;
 	char	*a = NULL;
 	char	*b = NULL;
 	void	*initial_brk = NULL;
@@ -381,7 +387,7 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	initial_brk = sbrk(0);
 	b = ft_strdup(str);
 
-	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -402,7 +408,7 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	initial_brk = sbrk(0);
 	b = ft_strdup(s_empty);
 
-	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -425,7 +431,43 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	initial_brk = sbrk(0);
 	b = ft_strdup(s_long);
 
-	if ((a == NULL && b == NULL) || ft_strcmp(a, b) == 0)
+	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str: [%s]\n", a);
+		printf("str: [%s]\n", b);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	if (a != NULL)
+		free(a);
+	// if (b != NULL)
+	// 	free(b);
+	if (brk(initial_brk) == -1)
+	{
+		perror("brk");
+		exit (1);
+	}
+
+
+
+	struct rlimit limit;
+	
+	limit.rlim_cur = 0;  // Soft limit (100 MB)
+    limit.rlim_max = 0;  // Hard limit (100 MB)
+
+	if (setrlimit(RLIMIT_AS, &limit) != 0) {
+        perror("setrlimit");
+        return ;
+    }
+
+	printf("(heap limited) strdup(s_long) / ft_strdup(s_long)\n");
+	a = strdup(s_long);
+	initial_brk = sbrk(0);
+	b = ft_strdup(s_long);
+
+	printf("a(%%p=[%p]) = [%s] \n b(%%p=[%p]) = [%s])", a,a,b,b);
+	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
@@ -600,7 +642,7 @@ int	main( void )
 	char	s_empty[5] = {0};
 	// char	*r = NULL;
 	char	s_long[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-	// char	s_long2[] = "dorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	// char	s_long2[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 
 	// test_strlen(str, s_empty, s_long);
 
@@ -608,11 +650,11 @@ int	main( void )
 
 	// test_strcmp(str, s_empty, s_long, s_long2);
 
-	test_write(str, s_empty, s_long);
+	// test_write(str, s_empty, s_long);
 
-	test_read(str, s_empty, s_long);
+	// test_read(str, s_empty, s_long);
 
-	// test_strdup(str, s_empty, s_long);
+	test_strdup(str, s_empty, s_long);
 
 	// test_atoi_base();
 

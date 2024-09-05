@@ -8,3 +8,4 @@ write_out
 .vscode
 a.c
 a.out
+massif.out.*
