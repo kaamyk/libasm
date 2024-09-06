@@ -1,42 +1,36 @@
 BITS	64
 
+section .text
 global	ft_strdup
 
 extern ft_strlen
 extern ft_strcpy
-extern _malloc
+extern malloc
+
+;	char *strdup(const char *s);
 
 ft_strdup:
-	call ft_strlen
-	;rax > s_len
-	inc rax 	; +1 for '\0'
-	mov r8, rax
-	mov r9, rdi
+	test	rdi, rdi
+	jz		exit_err
 
-	;Get the actual brk
-	mov rax, 12	;sys_brk
-	xor rdi, rdi
-	syscall
-	;rax > actual highest available address
-	mov r10, rax
+	push	rdi
+	call	ft_strlen
+	inc		rax 	; +1 for '\0'
 
-	;allocate the new area
-	add rax, r8
-	mov rdi, rax
-	mov rax, 12
-	syscall
-
-	;check result
-	cmp rax, 0
-	jl exit
+	; Allocate using malloc
+	mov		rdi, rax
+	call	malloc wrt ..plt
+	; Check result
+	test	rax, rax
+	pop		rsi
+	jz		exit_err
 	
 	;set up for strcpy
-	sub rax, r8
-	mov rdi, rax
-	mov rsi, r9
-	call ft_strcpy
+	mov		rdi, rax
+	call	ft_strcpy
 
 	ret
 
-	exit:
+	exit_err:
+		mov	rax, 0
 		ret

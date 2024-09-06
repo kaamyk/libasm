@@ -28,6 +28,8 @@ ssize_t	ft_write(int fd, char *buf, size_t count);
 ssize_t	ft_read(int fd, char *buf, size_t count);
 char	*ft_strdup(char *src);
 
+//	BONUS
 int		ft_atoi_base(char *str, char *base);
+void	ft_list_push_front(t_list **begin_list, void *data);
 
 #endif

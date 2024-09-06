@@ -163,7 +163,7 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 	}
 }
 
-void test_write(char *str, char *s_empty, char *s_long)
+void	test_write(char *str, char *s_empty, char *s_long)
 {
 	printf("==================\n");
 	remove("write_out");
@@ -379,12 +379,11 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	(void) s_long;
 	char	*a = NULL;
 	char	*b = NULL;
-	void	*initial_brk = NULL;
 	
 	printf("==================\n");
 	printf("strdup(str) / ft_strdup(str)\n");
 	a = strdup(str);
-	initial_brk = sbrk(0);
+	// initial_brk = sbrk(0);
 	b = ft_strdup(str);
 
 	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
@@ -397,15 +396,13 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	}
 	if (a != NULL)
 		free(a);
-	if (brk(initial_brk) == -1)
-	{
-		perror("brk");
-		exit (1);
-	}
+	if (b != NULL)
+		free(b);
+	
 
 	printf("strdup(s_empty) / ft_strdup(s_empty)\n");
 	a = strdup(s_empty);
-	initial_brk = sbrk(0);
+	// initial_brk = sbrk(0);
 	b = ft_strdup(s_empty);
 
 	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
@@ -418,17 +415,12 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	}
 	if (a != NULL)
 		free(a);
-	// if (b != NULL)
-	// 	free(b);
-	if (brk(initial_brk) == -1)
-	{
-		perror("brk");
-		exit (1);
-	}
+	if (b != NULL)
+		free(b);
 
 	printf("strdup(s_long) / ft_strdup(s_long)\n");
 	a = strdup(s_long);
-	initial_brk = sbrk(0);
+	// initial_brk = sbrk(0);
 	b = ft_strdup(s_long);
 
 	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
@@ -441,68 +433,8 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 	}
 	if (a != NULL)
 		free(a);
-	// if (b != NULL)
-	// 	free(b);
-	if (brk(initial_brk) == -1)
-	{
-		perror("brk");
-		exit (1);
-	}
-
-
-
-
-	struct rlimit old_limit;
-	if (getrlimit(RLIMIT_AS,&old_limit) == -1)
-	{
-		perror("getrlimit()");
-	}
-	
-	struct rlimit new_limit;
-	
-	new_limit.rlim_cur = 30 * 1024 * 1024;  // Soft limit (100 MB)
-    new_limit.rlim_max = 30 * 1024 * 1024;  // Hard limit (100 MB)
-
-	if (setrlimit(RLIMIT_AS, &new_limit) != 0) {
-        perror("setrlimit");
-        return ;
-    }
-
-	// int prlimit(pid_t pid, int resource,
-			//    const struct rlimit *_Nullable new_limit,
-			//    struct rlimit *_Nullable old_limit);
-	// if (prlimit(getpid(), RLIMIT_AS, &new_limit, &old_limit) == -1)
-	// {
-	// 	perror("prlimit():");
-	// }
-
-	printf("(heap limited) strdup(s_long) / ft_strdup(s_long)\n");
-	a = strdup(s_long);
-	initial_brk = sbrk(0);
-	b = ft_strdup(s_long);
-
-	printf("a(%%p=[%p]) = [%s] \n b(%%p=[%p]) = [%s])", a,a,b,b);
-	if ((a == NULL && b == NULL) || strcmp(a, b) == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("ft_str: [%s]\n", a);
-		printf("str: [%s]\n", b);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	if (a != NULL)
-		free(a);
-	// if (b != NULL)
-	// 	free(b);
-	if (brk(initial_brk) == -1)
-	{
-		perror("brk");
-		exit (1);
-	}
-	if (setrlimit(RLIMIT_AS, &old_limit) != 0) {
-        perror("setrlimit");
-        return ;
-    }
+	if (b != NULL)
+		free(b);
 }
 
 void	test_atoi_base()
@@ -646,6 +578,218 @@ void	test_atoi_base()
 	}
 }
 
+void	free_list(t_list *l)
+{
+	t_list	*tmp = NULL;
+	while (l != NULL)
+	{
+		free(l->data);
+		tmp = l;
+		l = l->next;
+		free(tmp);
+	}
+}
+
+void	free_list_n(t_list *l)
+{
+	t_list	*tmp = NULL;
+	while (l != NULL)
+	{
+		tmp = l;
+		l = l->next;
+		free(tmp);
+	}
+}
+
+void	print_list(t_list *l)
+{
+	if (l == NULL)
+	{
+		printf("List is empty\n");
+		return ;
+	}
+	
+	t_list	*tmp = l;
+	for (int i = 0; tmp != NULL; i++)
+	{
+		printf("item[%d]->data == [%s]\n", i, (char*)tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void	print_list_n(t_list *l)
+{
+	if (l == NULL)
+	{
+		printf("List is empty\n");
+		return ;
+	}
+	
+	t_list	*tmp = l;
+	for (int i = 0; tmp != NULL; i++)
+	{
+		printf("item[%d]->data == [%d]\n", i, *(int*)tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void	test_list_push_front()
+{
+	printf("==================\n");
+	printf("ft_list_push_front(valid) / ft_list_push_front(valid)\n");
+
+	char	*s = malloc(2);
+	s[0] = 'A';
+	s[1] = '\0';
+	t_list	*l = malloc(sizeof(t_list));
+	if (l == NULL)
+		return ;
+	l->data = strdup(s);
+	l->next = NULL;
+	t_list	*prev = l;
+	t_list	*n_l = NULL;
+
+	for (int i = 0; i < 3; i++)
+	{
+		n_l = malloc(sizeof(t_list));
+		(*s)++;
+		n_l->data = strdup(s);
+		n_l->next = NULL;
+
+		prev->next = n_l;
+		prev = n_l;
+		n_l = n_l->next;
+	}
+	prev = l;
+	print_list(prev);
+
+	(*s)++; // s[0] = 'D'
+
+	printf("Before l addr == %p\n", l);
+	ft_list_push_front(&l, s);
+	printf("After l addr == %p\n", l);
+
+	prev = l;
+	print_list(prev);
+
+	if (l != NULL && l->data != NULL && strcmp (l->data, s) == 0 && l->next != NULL)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("l: [%p]\n", l);
+		printf("l->data: [%p]\n", l->data);
+		printf("l->next: [%p]\n", l->next);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	free_list(l);
+	printf("\n");
+
+	printf("ft_list_push_front(NULL, valid) / ft_list_push_front(NULL, valid)\n");
+
+	s = malloc(4);
+	s[0] = 'L';
+	s[1] = 'O';
+	s[2] = 'L';
+	s[3] = '\0';
+	
+	l = NULL;
+	prev = l;
+	print_list(prev);
+
+	printf("Before l addr == %p\n", l);
+	ft_list_push_front(&l, s);
+	printf("After l addr == %p\n", l);
+
+	prev = l;
+	print_list(prev);
+
+	if (l != NULL && l->data != NULL && strcmp(l->data, s) == 0 && l->next == NULL)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("l: [%p]\n", l);
+		printf("l->data: [%p]\n", l->data);
+		printf("l->next: [%p]\n", l->next);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("\n");
+	free_list(l);
+
+	printf("ft_list_push_front(NULL, NULL) / ft_list_push_front(NULL, NULL)\n");
+	s = NULL;
+	l = NULL;
+	prev = l;
+	print_list(prev);
+
+	printf("Before l addr == %p\n", l);
+	ft_list_push_front(&l, s);
+	printf("After l addr == %p\n", l);
+
+	prev = l;
+	print_list(prev);
+
+	if (l != NULL && l->data == NULL && l->next == NULL)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("l: [%p]\n", l);
+		printf("l->data: [%p]\n", l->data);
+		printf("l->next: [%p]\n", l->next);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("\n");
+	free_list(l);
+
+	printf("ft_list_push_front(valid, int*) / ft_list_push_front(valid, int*)\n");
+
+	int		n[] = {42, 43, 44, 45, 46};
+
+	l = malloc(sizeof(t_list));
+	if (l == NULL)
+		return ;
+	l->data = n;
+	l->next = NULL;
+	prev = l;
+	n_l = NULL;
+
+	for (int i = 0; i < 3; i++)
+	{
+		n_l = malloc(sizeof(t_list));
+		n_l->data = n + i;
+		n_l->next = NULL;
+
+		prev->next = n_l;
+		prev = n_l;
+		n_l = n_l->next;
+	}
+	prev = l;
+	print_list_n(prev);
+
+
+	printf("Before l addr == %p\n", l);
+	ft_list_push_front(&l, n + 4);
+	printf("After l addr == %p\n", l);
+
+	prev = l;
+	print_list_n(prev);
+
+	if (l != NULL && l->data != NULL && l->next != NULL)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("l: [%p]\n", l);
+		printf("l->data: [%p]\n", l->data);
+		printf("l->next: [%p]\n", l->next);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("\n");
+	free_list_n(l);
+}
+
 int	main( void )
 {
 	// char	str[] = "Bibi";
@@ -657,25 +801,24 @@ int	main( void )
 	str[2] = 'b';
 	str[3] = 'i';
 	str[4] = '\0';
+	(void) str;
 		
 	char	s_empty[5] = {0};
+	(void) s_empty;
 	// char	*r = NULL;
 	char	s_long[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
-	// char	s_long2[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	(void) s_long;
+	char	s_long2[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
+	(void) s_long2;
 
-	// test_strlen(str, s_empty, s_long);
-
-	// test_strcpy(str, s_empty, s_long);
-
-	// test_strcmp(str, s_empty, s_long, s_long2);
-
-	// test_write(str, s_empty, s_long);
-
-	// test_read(str, s_empty, s_long);
-
+	test_strlen(str, s_empty, s_long);
+	test_strcpy(str, s_empty, s_long);
+	test_strcmp(str, s_empty, s_long, s_long2);
+	test_write(str, s_empty, s_long);
+	test_read(str, s_empty, s_long);
 	test_strdup(str, s_empty, s_long);
-
-	// test_atoi_base();
+	test_atoi_base();
+	test_list_push_front();
 
 	free(str);
 	return (0);
