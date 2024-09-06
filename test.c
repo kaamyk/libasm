@@ -682,6 +682,16 @@ void	test_list_push_front()
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
+	printf("ft_list_size(valid) / ft_list_size(valid)\n");
+	int	a = ft_list_size(l);
+	if (a == 5)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_len == %d\n", a);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	
 	free_list(l);
 	printf("\n");
 
@@ -714,6 +724,16 @@ void	test_list_push_front()
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
+	printf("ft_list_size(single) / ft_list_size(single)\n");
+	a = ft_list_size(l);
+	if (a == 1)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_len == %d\n", a);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+	
 	printf("\n");
 	free_list(l);
 
@@ -737,6 +757,16 @@ void	test_list_push_front()
 		printf("l: [%p]\n", l);
 		printf("l->data: [%p]\n", l->data);
 		printf("l->next: [%p]\n", l->next);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	printf("ft_list_size(NULL) / ft_list_size(NULL)\n");
+	a = ft_list_size(NULL);
+	if (a == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_len == %d\n", a);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
