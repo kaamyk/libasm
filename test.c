@@ -628,7 +628,8 @@ void	print_list_n(t_list *l)
 	t_list	*tmp = l;
 	for (int i = 0; tmp != NULL; i++)
 	{
-		printf("item[%d]->data == [%d]\n", i, *(int*)tmp->data);
+		printf("item[%d]->data(%p) == [%d]\n", i, &(tmp->data), *(int*)tmp->data);
+		printf("item[%d]->next == %p\n", i, tmp->next);
 		tmp = tmp->next;
 	}
 }
@@ -820,6 +821,49 @@ void	test_list_push_front()
 	free_list_n(l);
 }
 
+int		intcmp(int i1, int i2)
+{
+	return (i1 - i2);
+}
+
+void	test_list_sort()
+{
+	// char	*s[] = {"a", "b", "c", "d", "e"};
+	int		tab[] = {6, 2, 1, 5, 4, 3};
+	(void)tab;
+	t_list	*l = NULL;
+	(void)l;
+	t_list	*l_sorted = NULL;
+	(void)l_sorted;
+	t_list	*prev = NULL;
+	(void)prev;
+	t_list	*n_l = NULL;
+	(void)n_l;
+
+	l = malloc(sizeof(t_list));
+	if (l == NULL)
+		return ;
+	l->data = tab;
+	l->next = NULL;
+	prev = l;
+	n_l = NULL;
+
+	for (int i = 0; i < 3; i++)
+	{
+		n_l = malloc(sizeof(t_list));
+		n_l->data = (tab + i + 1);
+		n_l->next = NULL;
+
+		prev->next = n_l;
+		prev = n_l;
+		n_l = n_l->next;
+	}
+	print_list_n(l);
+	int *res = (int*)ft_list_sort(&l, NULL);
+	printf("res == %p\n", res);
+	free_list(l);
+}
+
 int	main( void )
 {
 	// char	str[] = "Bibi";
@@ -841,14 +885,15 @@ int	main( void )
 	char	s_long2[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 	(void) s_long2;
 
-	test_strlen(str, s_empty, s_long);
-	test_strcpy(str, s_empty, s_long);
-	test_strcmp(str, s_empty, s_long, s_long2);
-	test_write(str, s_empty, s_long);
-	test_read(str, s_empty, s_long);
-	test_strdup(str, s_empty, s_long);
-	test_atoi_base();
-	test_list_push_front();
+	// test_strlen(str, s_empty, s_long);
+	// test_strcpy(str, s_empty, s_long);
+	// test_strcmp(str, s_empty, s_long, s_long2);
+	// test_write(str, s_empty, s_long);
+	// test_read(str, s_empty, s_long);
+	// test_strdup(str, s_empty, s_long);
+	// test_atoi_base();
+	// test_list_push_front();
+	test_list_sort();
 
 	free(str);
 	return (0);
