@@ -13,25 +13,29 @@ void	test_strlen(char *str, char *s_empty, char *s_long)
 	
 	printf("strlen(str) / ft_strlen(str)\n");
 	s1 = strlen(str);
+	errno_sys = errno;
 	s2 = ft_strlen(str);
-	if (s1 == s2)
+	errno_ft = errno;
+	if (s1 == s2 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len s: %ld\n", strlen(str));
-		printf("len s: %ld\n", ft_strlen(str));
+		printf("len s(%d): %ld\n",errno_sys, strlen(str));
+		printf("ft len s(%d): %ld\n", errno_ft, ft_strlen(str));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
 	printf("strlen(s_empty) / ft_strlen(s_empty)\n");
 	s1 = strlen(s_empty);
+	errno_sys = errno;
 	s2 = ft_strlen(s_empty);
-	if (s1 == s2)
+	errno_ft = errno;
+	if (s1 == s2 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len s_empty: %ld\n", strlen(s_empty));
-		printf("len s_empty: %ld\n", ft_strlen(s_empty));
+		printf("len s(%d): %ld\n",errno_sys, strlen(str));
+		printf("ft len s(%d): %ld\n", errno_ft, ft_strlen(str));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -50,13 +54,15 @@ void	test_strlen(char *str, char *s_empty, char *s_long)
 
 	printf("strlen(s_long) / ft_strlen(s_long)\n");
 	s1 = strlen(s_long);
+	errno_sys = errno;
 	s2 = ft_strlen(s_long);
-	if (s1 == s2)
+	errno_ft = errno;
+	if (s1 == s2 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("len r: %ld\n", strlen(s_long));
-		printf("len r: %ld\n", ft_strlen(s_long));
+		printf("len s(%d): %ld\n",errno_sys, strlen(str));
+		printf("ft len s(%d): %ld\n", errno_ft, ft_strlen(str));
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 }
@@ -73,14 +79,16 @@ void	test_strcpy(char *str, char *s_empty, char *s_long)
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
 	strcpy(buf1, str);
+	errno_ft = errno;
 	ft_strcpy(buf2, str);
+	errno_sys = errno;
 
-	if (strcmp(buf1, buf2) == 0)
+	if (strcmp(buf1, buf2) == 0 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("strcpy: buf1(dest) == [%s]\n", buf1);
-		printf("ft_strcpy: buf2(dest) == [%s]\n", buf2);
+		printf("strcpy(%d): buf1(dest) == [%s]\n", errno_sys, buf1);
+		printf("ft_strcpy(%d): buf2(dest) == [%s]\n", errno_ft, buf2);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -88,14 +96,16 @@ void	test_strcpy(char *str, char *s_empty, char *s_long)
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
 	strcpy(buf1, s_long);
+	errno_sys = errno;
 	ft_strcpy(buf2, s_long);
+	errno_ft = errno;
 
-	if (strcmp(buf1, buf2) == 0)
+	if (strcmp(buf1, buf2) == 0 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("strcpy: buf1(dest) == [%s]\n", buf1);
-		printf("ft_strcpy: buf2(dest) == [%s]\n", buf2);
+		printf("strcpy(%d): buf1(dest) == [%s]\n", errno_sys, buf1);
+		printf("ft_strcpy(%d): buf2(dest) == [%s]\n", errno_ft, buf2);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -103,14 +113,16 @@ void	test_strcpy(char *str, char *s_empty, char *s_long)
 	bzero(buf1, sizeof(buf1));
 	bzero(buf2, sizeof(buf2));
 	strcpy(buf1, s_empty);
+	errno_sys = errno;
 	ft_strcpy(buf2, s_empty);
+	errno_ft = errno;
 
-	if (strcmp(buf1, buf2) == 0)
+	if (strcmp(buf1, buf2) == 0 && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("strcpy: buf1(dest) == [%s]\n", buf1);
-		printf("ft_strcpy: buf2(dest) == [%s]\n", buf2);
+		printf("strcpy(%d): buf1(dest) == [%s]\n", errno_sys, buf1);
+		printf("ft_strcpy(%d): buf2(dest) == [%s]\n", errno_ft, buf2);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -125,7 +137,9 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 	printf("ft_strcmp:\n");
 	printf("strcmp(s_long, s_long2) / ft_strcmp(s_long, s_long2)\n");
 	i1 = strcmp(s_long, s_long2);
+	errno_sys = errno;
 	i2 = ft_strcmp(s_long, s_long2);
+	errno_ft = errno;
 	printf("strcmp() == %d | ft_strcmp() == %d\n", i1, i2);
 	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
@@ -151,14 +165,16 @@ void	test_strcmp(char *str, char *s_empty, char *s_long, char *s_long2)
 
 	printf("strcmp(s_empty, str) / ft_strcmp(s_empty, str)\n");
 	i1 = strcmp(s_empty, str);
+	errno_sys = errno;
 	i2 = ft_strcmp(s_empty, str);
+	errno_ft = errno;
 	printf("strcmp() == %d | ft_strcmp() == %d\n", i1, i2);
-	if ((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0))
+	if (((i1 == 0 && i2 == 0) || (i1 < 0 && i2 < 0) || (i1 > 0 && i2 > 0)) && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("strcmp: %d\n", i1);
-		printf("ft_strcmp: %d\n", i2);
+		printf("strcmp(%d): %d\n", errno_sys, i1);
+		printf("ft_strcmp(%d): %d\n", errno_ft, i2);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 }
@@ -190,14 +206,13 @@ void	test_write(char *str, char *s_empty, char *s_long)
 		// return ;
 	}
 	printf("write(str) / ft_write(str)\n");
+	errno = 0;
 	ft_bytes = ft_write(fd_ft, str, strlen(str));
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 	bytes = write(fd_sys, str, strlen(str));
 	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -206,26 +221,23 @@ void	test_write(char *str, char *s_empty, char *s_long)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
-		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("fd_sys content(%d): [%s](%ld bytes)\n", errno_sys, ft_res, ft_bytes);
+		printf("fd_ft content(%d): [%s](%ld bytes)\n", errno_ft, res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}	
 	
 
 	printf("write(s_empty) / ft_write(s_empty)\n");
+	errno = 0;
 	ft_bytes = ft_write(fd_ft, s_empty, strlen(s_empty));
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 	bytes = write(fd_sys, s_empty, strlen(s_empty));
 	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
 	
 
 	bzero(res, 255);
@@ -235,28 +247,22 @@ void	test_write(char *str, char *s_empty, char *s_long)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
-		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("fd_sys content(%d): [%s](%ld bytes)\n", errno_sys, ft_res, ft_bytes);
+		printf("fd_ft content(%d): [%s](%ld bytes)\n", errno_ft, res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
 	printf("write(s_long) / ft_write(s_long)\n");
-	ft_bytes =ft_write(fd_ft, s_long, strlen(s_long));
+	errno = 0;
+	ft_bytes = ft_write(fd_ft, s_long, strlen(s_long));
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
-	bytes =write(fd_sys, s_long, strlen(s_long));
+	errno = 0;
+	bytes = write(fd_sys, s_long, strlen(s_long));
 	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
-
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
 
 	bzero(res, 255);
 	bzero(ft_res, 255);
@@ -265,13 +271,39 @@ void	test_write(char *str, char *s_empty, char *s_long)
 	read(fd_sys, res, 255);
 	read(fd_ft, ft_res, 255);
 
-	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes)
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes && errno_ft == errno_sys)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("fd_sys content: [%s](%ld bytes)\n", ft_res, ft_bytes);
-		printf("fd_ft content: [%s](%ld bytes)\n", res, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("fd_sys content(%d): [%s](%ld bytes)\n", errno_sys, ft_res, ft_bytes);
+		printf("fd_ft content(%d): [%s](%ld bytes)\n", errno_ft, res, bytes);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	close(fd_ft);
+	close(fd_sys);
+
+	printf("write(5555) / ft_write(5555)\n");
+	errno = 0;
+	bytes = write(6574238, s_long, strlen(s_long));
+	errno_sys = errno;
+	errno = 0;
+	ft_bytes = ft_write(6574238, s_long, strlen(s_long));
+	errno_ft = errno;
+
+	bzero(res, 255);
+	bzero(ft_res, 255);
+	lseek(fd_sys, 0, SEEK_SET);
+	lseek(fd_ft, 0, SEEK_SET);
+	read(fd_sys, res, 255);
+	read(fd_ft, ft_res, 255);
+
+	if (strcmp(ft_res, res) == 0 && ft_bytes == bytes && errno_ft == errno_sys)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("fd_sys content(%d): [%s](%ld bytes)\n", errno_sys, ft_res, ft_bytes);
+		printf("fd_ft content(%d): [%s](%ld bytes)\n", errno_ft, res, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
@@ -312,62 +344,70 @@ void	test_read()
 	bzero(ft_str, 255);
 	lseek(fd_sys, 0, SEEK_SET);
 	lseek(fd_ft, 0, SEEK_SET);
+	errno = 0;
 	ft_bytes = ft_read(fd_ft, ft_str, 255);
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 	bytes = read(fd_sys, str, 255);
 	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 
 	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes && errno_sys == errno_ft)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("ft_str: [%s](%ld bytes)\n", ft_str, ft_bytes);
-		printf("str: [%s](%ld bytes)\n", str, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("ft_str(%d): [%s](%ld bytes)\n", errno_ft, ft_str, ft_bytes);
+		printf("str(%d): [%s](%ld bytes)\n", errno_sys, str, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
 	printf("read(file_inexistant) / ft_read(file_inexistant)\n");
 
-	bytes = read(55555, str, 255);
-	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
-	ft_bytes = ft_read(55555, ft_str, 255);
+	errno = 0;
+	ft_bytes = ft_read(5555, ft_str, 255);
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
+	errno = 0;
+	bytes = read(5555, str, 255);
+	errno_sys = errno;
 
 	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes && errno_sys == errno_ft)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("ft_str: [%s](%ld bytes)\n", ft_str, ft_bytes);
-		printf("str: [%s](%ld bytes)\n", str, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("ft_str(%d): [%s](%ld bytes)\n", errno_ft, ft_str, ft_bytes);
+		printf("str(%d): [%s](%ld bytes)\n", errno_sys, str, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 
+	errno = 0;
 	ft_bytes = ft_read(-1, ft_str, 255);
 	errno_ft = errno;
-	if (errno)
-		printf("(ft)error %d: %s\n", errno, strerror(errno));
+	errno = 0;
 	bytes = read(-1, str, 255);
 	errno_sys = errno;
-	if (errno)
-		printf("error %d: %s\n", errno, strerror(errno));
 
 	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes && errno_sys == errno_ft)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
 	{
-		printf("ft_str: [%s](%ld bytes)\n", ft_str, ft_bytes);
-		printf("str: [%s](%ld bytes)\n", str, bytes);
-		printf("errno_sys == %d | errno_ft == %d\n", errno_sys, errno_ft);
+		printf("ft_str(%d): [%s](%ld bytes)\n", errno_ft, ft_str, ft_bytes);
+		printf("str(%d): [%s](%ld bytes)\n", errno_sys, str, bytes);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
+	errno = 0;
+	ft_bytes = ft_read(5555, ft_str, 255);
+	errno_ft = errno;
+	errno = 0;
+	bytes = read(5555, str, 255);
+	errno_sys = errno;
+
+	if (ft_strcmp(str, ft_str) == 0 && ft_bytes == bytes && errno_sys == errno_ft)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("ft_str(%d): [%s](%ld bytes)\n", errno_ft, ft_str, ft_bytes);
+		printf("str(%d): [%s](%ld bytes)\n", errno_sys, str, bytes);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
 }
@@ -437,433 +477,6 @@ void	test_strdup(char *str, char *s_empty, char *s_long)
 		free(b);
 }
 
-void	test_atoi_base()
-{
-	int	res = 0;
-
-	printf("==================\n");
-	printf("ft_atoi_base(\"ABC\", NULL)\n");
-	res = ft_atoi_base("ABC", NULL);			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	printf("ft_atoi_base(\"ABC\", \"\")\n");
-	res = ft_atoi_base("ABC", "");				//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	printf("ft_atoi_base(\"ABC\", \"a\")\n");
-	res = ft_atoi_base("ABC", "a");				//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	printf("ft_atoi_base(\"ABC\", \"A BC\")\n");
-	res = ft_atoi_base("ABC", "A BC");			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	printf("ft_atoi_base(\"ABC\", \"A	BC\")\n");
-	res = ft_atoi_base("ABC", "A	BC");		//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	printf("ft_atoi_base(\"ABC\", \"ABBC\")\n");
-	res = ft_atoi_base("ABC", "ABBC");			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"ABC\", \"ABC\")\n");
-	res = ft_atoi_base("ABC", "ABC");			//
-	if (res == 5)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"AAA\", \"ABC\")\n");
-	res = ft_atoi_base("AAA", "ABC");			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"666\", \"ABC\")\n");
-	res = ft_atoi_base("666", "ABC");			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"BAC\", \"ABC\")\n");
-	res = ft_atoi_base("BAC", "ABC");			//
-	if (res == 11)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"CAA\", \"ABC\")\n");
-	res = ft_atoi_base("CAA", "ABC");			//
-	if (res == 18)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	
-	printf("ft_atoi_base(\"pui\", \"ppp\")\n");
-	res = ft_atoi_base("", "ABC");			//
-	if (res == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"pqqw\", \"qwertyuiop\")\n");
-	res = ft_atoi_base("pqqw", "qwertyuiop");			//
-	if (res == 9001)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_atoi_base(\"124556\", \"0123456789\")\n");
-	res = ft_atoi_base("124556", "0123456789");			//
-	if (res == 124556)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("res: [%d]\n", res);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-}
-
-void	free_list(t_list *l)
-{
-	t_list	*tmp = NULL;
-	while (l != NULL)
-	{
-		free(l->data);
-		tmp = l;
-		l = l->next;
-		free(tmp);
-	}
-}
-
-void	free_list_n(t_list *l)
-{
-	t_list	*tmp = NULL;
-	while (l != NULL)
-	{
-		tmp = l;
-		l = l->next;
-		free(tmp);
-	}
-}
-
-void	print_list(t_list *l)
-{
-	if (l == NULL)
-	{
-		printf("List is empty\n");
-		return ;
-	}
-	
-	t_list	*tmp = l;
-	for (int i = 0; tmp != NULL; i++)
-	{
-		printf("item[%d]->data == [%s]\n", i, (char*)tmp->data);
-		tmp = tmp->next;
-	}
-}
-
-void	print_list_n(t_list *l)
-{
-	if (l == NULL)
-	{
-		printf("List is empty\n");
-		return ;
-	}
-	
-	t_list	*tmp = l;
-	for (int i = 0; tmp != NULL; i++)
-	{
-		printf("item[%d]->data(%p) == [%d]\n", i, &(tmp->data), *(int*)tmp->data);
-		printf("item[%d]->next == %p\n", i, tmp->next);
-		tmp = tmp->next;
-	}
-}
-
-void	test_list_push_front()
-{
-	printf("==================\n");
-	printf("ft_list_push_front(valid) / ft_list_push_front(valid)\n");
-
-	char	*s = malloc(2);
-	s[0] = 'A';
-	s[1] = '\0';
-	t_list	*l = malloc(sizeof(t_list));
-	if (l == NULL)
-		return ;
-	l->data = strdup(s);
-	l->next = NULL;
-	t_list	*prev = l;
-	t_list	*n_l = NULL;
-
-	for (int i = 0; i < 3; i++)
-	{
-		n_l = malloc(sizeof(t_list));
-		(*s)++;
-		n_l->data = strdup(s);
-		n_l->next = NULL;
-
-		prev->next = n_l;
-		prev = n_l;
-		n_l = n_l->next;
-	}
-	prev = l;
-	print_list(prev);
-
-	(*s)++; // s[0] = 'D'
-
-	printf("Before l addr == %p\n", l);
-	ft_list_push_front(&l, s);
-	printf("After l addr == %p\n", l);
-
-	prev = l;
-	print_list(prev);
-
-	if (l != NULL && l->data != NULL && strcmp (l->data, s) == 0 && l->next != NULL)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("l: [%p]\n", l);
-		printf("l->data: [%p]\n", l->data);
-		printf("l->next: [%p]\n", l->next);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_list_size(valid) / ft_list_size(valid)\n");
-	int	a = ft_list_size(l);
-	if (a == 5)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("ft_len == %d\n", a);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	
-	free_list(l);
-	printf("\n");
-
-	printf("ft_list_push_front(NULL, valid) / ft_list_push_front(NULL, valid)\n");
-
-	s = malloc(4);
-	s[0] = 'L';
-	s[1] = 'O';
-	s[2] = 'L';
-	s[3] = '\0';
-	
-	l = NULL;
-	prev = l;
-	print_list(prev);
-
-	printf("Before l addr == %p\n", l);
-	ft_list_push_front(&l, s);
-	printf("After l addr == %p\n", l);
-
-	prev = l;
-	print_list(prev);
-
-	if (l != NULL && l->data != NULL && strcmp(l->data, s) == 0 && l->next == NULL)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("l: [%p]\n", l);
-		printf("l->data: [%p]\n", l->data);
-		printf("l->next: [%p]\n", l->next);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_list_size(single) / ft_list_size(single)\n");
-	a = ft_list_size(l);
-	if (a == 1)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("ft_len == %d\n", a);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-	
-	printf("\n");
-	free_list(l);
-
-	printf("ft_list_push_front(NULL, NULL) / ft_list_push_front(NULL, NULL)\n");
-	s = NULL;
-	l = NULL;
-	prev = l;
-	print_list(prev);
-
-	printf("Before l addr == %p\n", l);
-	ft_list_push_front(&l, s);
-	printf("After l addr == %p\n", l);
-
-	prev = l;
-	print_list(prev);
-
-	if (l != NULL && l->data == NULL && l->next == NULL)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("l: [%p]\n", l);
-		printf("l->data: [%p]\n", l->data);
-		printf("l->next: [%p]\n", l->next);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("ft_list_size(NULL) / ft_list_size(NULL)\n");
-	a = ft_list_size(NULL);
-	if (a == 0)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("ft_len == %d\n", a);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("\n");
-	free_list(l);
-
-	printf("ft_list_push_front(valid, int*) / ft_list_push_front(valid, int*)\n");
-
-	int		n[] = {42, 43, 44, 45, 46};
-
-	l = malloc(sizeof(t_list));
-	if (l == NULL)
-		return ;
-	l->data = n;
-	l->next = NULL;
-	prev = l;
-	n_l = NULL;
-
-	for (int i = 0; i < 3; i++)
-	{
-		n_l = malloc(sizeof(t_list));
-		n_l->data = n + i;
-		n_l->next = NULL;
-
-		prev->next = n_l;
-		prev = n_l;
-		n_l = n_l->next;
-	}
-	prev = l;
-	print_list_n(prev);
-
-
-	printf("Before l addr == %p\n", l);
-	ft_list_push_front(&l, n + 4);
-	printf("After l addr == %p\n", l);
-
-	prev = l;
-	print_list_n(prev);
-
-	if (l != NULL && l->data != NULL && l->next != NULL)
-		printf(GRN ">>> OK <<<\n" COLOR_RESET);
-	else
-	{
-		printf("l: [%p]\n", l);
-		printf("l->data: [%p]\n", l->data);
-		printf("l->next: [%p]\n", l->next);
-		printf(RED ">>> KO <<<\n" COLOR_RESET);
-	}
-
-	printf("\n");
-	free_list_n(l);
-}
-
-int		intcmp(int i1, int i2)
-{
-	return (i1 - i2);
-}
-
-void	test_list_sort()
-{
-	// char	*s[] = {"a", "b", "c", "d", "e"};
-	int		tab[] = {6, 2, 1, 5, 4, 3};
-	(void)tab;
-	t_list	*l = NULL;
-	(void)l;
-	t_list	*l_sorted = NULL;
-	(void)l_sorted;
-	t_list	*prev = NULL;
-	(void)prev;
-	t_list	*n_l = NULL;
-	(void)n_l;
-
-	l = malloc(sizeof(t_list));
-	if (l == NULL)
-		return ;
-	l->data = tab;
-	l->next = NULL;
-	prev = l;
-	n_l = NULL;
-
-	for (int i = 0; i < 3; i++)
-	{
-		n_l = malloc(sizeof(t_list));
-		n_l->data = (tab + i + 1);
-		n_l->next = NULL;
-
-		prev->next = n_l;
-		prev = n_l;
-		n_l = n_l->next;
-	}
-	print_list_n(l);
-	int *res = (int*)ft_list_sort(&l, NULL);
-	printf("res == %p\n", res);
-	free_list(l);
-}
-
 int	main( void )
 {
 	// char	str[] = "Bibi";
@@ -885,15 +498,12 @@ int	main( void )
 	char	s_long2[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla sapien lorem, a molestie massa consectetur eu. Suspendisse pulvinar ipsum convallis, accumsan nibh vitae, accumsan ex. In ullamcorper venenatis euismod. Vivamus a metus duis.";
 	(void) s_long2;
 
-	// test_strlen(str, s_empty, s_long);
-	// test_strcpy(str, s_empty, s_long);
-	// test_strcmp(str, s_empty, s_long, s_long2);
-	// test_write(str, s_empty, s_long);
-	// test_read(str, s_empty, s_long);
-	// test_strdup(str, s_empty, s_long);
-	// test_atoi_base();
-	// test_list_push_front();
-	test_list_sort();
+	test_strlen(str, s_empty, s_long);
+	test_strcpy(str, s_empty, s_long);
+	test_strcmp(str, s_empty, s_long, s_long2);
+	test_write(str, s_empty, s_long);
+	test_read(str, s_empty, s_long);
+	test_strdup(str, s_empty, s_long);
 
 	free(str);
 	return (0);

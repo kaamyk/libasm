@@ -1,6 +1,7 @@
 BITS	64
 
 global ft_read
+extern __errno_location
 
 ft_read:
 	mov rax, 0
@@ -10,7 +11,11 @@ ft_read:
 	jmp exit
 
 	exit_err:
-		mov rax, -1
+		neg		rax
+		mov		r8, rax
+		call	__errno_location wrt ..plt
+		mov		[rax], r8
+		mov		rax, -1
 		ret
 
 	exit:
