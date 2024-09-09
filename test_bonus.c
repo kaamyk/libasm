@@ -1,4 +1,4 @@
-#include "../inc/test.h"
+#include "inc/test.h"
 
 void	test_atoi_base()
 {
@@ -14,6 +14,17 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
+
+	printf("ft_atoi_base(NULL, \"ABC\")\n");
+	res = ft_atoi_base(NULL, "ABC");			//
+	if (res == 0)
+		printf(GRN ">>> OK <<<\n" COLOR_RESET);
+	else
+	{
+		printf("res: [%d]\n", res);
+		printf(RED ">>> KO <<<\n" COLOR_RESET);
+	}
+
 	printf("ft_atoi_base(\"ABC\", \"\")\n");
 	res = ft_atoi_base("ABC", "");				//
 	if (res == 0)
@@ -23,8 +34,9 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	printf("ft_atoi_base(\"ABC\", \"a\")\n");
-	res = ft_atoi_base("ABC", "a");				//
+
+	printf("ft_atoi_base(\"ABC\", \"A\")\n");
+	res = ft_atoi_base("ABC", "A");				//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -32,6 +44,7 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
+
 	printf("ft_atoi_base(\"ABC\", \"A BC\")\n");
 	res = ft_atoi_base("ABC", "A BC");			//
 	if (res == 0)
@@ -41,7 +54,8 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
-	printf("ft_atoi_base(\"ABC\", \"A	BC\")\n");
+
+	printf("ft_atoi_base(\"ABC\", \"A\\tBC\")\n");
 	res = ft_atoi_base("ABC", "A	BC");		//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
@@ -50,6 +64,7 @@ void	test_atoi_base()
 		printf("res: [%d]\n", res);
 		printf(RED ">>> KO <<<\n" COLOR_RESET);
 	}
+
 	printf("ft_atoi_base(\"ABC\", \"ABBC\")\n");
 	res = ft_atoi_base("ABC", "ABBC");			//
 	if (res == 0)
@@ -111,7 +126,7 @@ void	test_atoi_base()
 	}
 	
 	printf("ft_atoi_base(\"pui\", \"ppp\")\n");
-	res = ft_atoi_base("", "ABC");			//
+	res = ft_atoi_base("pui", "ppp");			//
 	if (res == 0)
 		printf(GRN ">>> OK <<<\n" COLOR_RESET);
 	else
@@ -352,7 +367,7 @@ void	test_list_push_front()
 	for (int i = 0; i < 3; i++)
 	{
 		n_l = malloc(sizeof(t_list));
-		n_l->data = n + i;
+		n_l->data = n + (i + 1);
 		n_l->next = NULL;
 
 		prev->next = n_l;

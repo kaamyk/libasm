@@ -9,3 +9,4 @@ write_out
 a.c
 a.out
 massif.out.*
+test_mem

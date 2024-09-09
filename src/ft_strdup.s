@@ -6,6 +6,7 @@ global	ft_strdup
 extern ft_strlen
 extern ft_strcpy
 extern malloc
+extern __errno_location
 
 ;	char *strdup(const char *s);
 
@@ -21,9 +22,9 @@ ft_strdup:
 	mov		rdi, rax
 	call	malloc wrt ..plt
 	; Check result
-	test	rax, rax
+	cmp		rax, 0
 	pop		rsi
-	jz		exit_err
+	je		exit_err
 	
 	;set up for strcpy
 	mov		rdi, rax
@@ -32,5 +33,8 @@ ft_strdup:
 	ret
 
 	exit_err:
-		mov	rax, 0
+		mov		r8, 0xc
+		call	__errno_location wrt ..plt
+		mov		[rax], r8
+		mov		rax, 0
 		ret

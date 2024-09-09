@@ -13,6 +13,7 @@
 
 #define GRN "\e[0;32m"
 #define RED "\e[0;31m"
+#define YLW "\e[0;33m"
 #define COLOR_RESET "\e[0m"
 
 typedef struct	s_list
